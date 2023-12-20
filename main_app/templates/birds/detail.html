@@ -53,6 +53,53 @@
         </table>
     </div>
 </div>
+<hr>
+<div class="row">
+    <div class="col s6">
+        <h3>{{ bird.name }}'s Trees</h3>
+        {% if bird.trees.count %}
+            {% for tree in bird.trees.all %}
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title">
+                            A <span style="color: {{ tree.color }}">{{ tree.color }} </span> {{ tree.name }}
+                        </span>
+                    </div>
+                    <div class="card-action">
+                        <form action="{% url 'unassoc_tree' bird.id tree.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn">Remove</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <h5>No Trees</h5>
+        {% endif %}
+    </div>
+    <div class="col s6">
+        <h3>Available Trees</h3>
+        {% if trees.count %}
+            {% for tree in trees.all %}
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title">
+                            A <span style="color: {{ tree.color }}">{{ tree.color }} </span> {{ tree.name }}
+                        </span>
+                    </div>
+                    <div class="card-action">
+                        <form action="{% url 'assoc_tree' bird.id tree.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn">Add</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <h5>{{ bird.name }} already has all trees.</h5>
+        {% endif %}
+    </div>
+</div>
 <script>
     const dateEl = document.getElementById('id_date');
     // M is Materialize's global variable

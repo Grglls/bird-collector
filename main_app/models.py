@@ -9,15 +9,26 @@ MEALS = (
     ('D', 'Dinner'),
 )
 
-# Create your models here.
+# Create your models here:
+class Tree(models.Model):
+    name = models.CharField(max_length=50)
+    color = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse('trees_detail', kwargs={'pk': self.id})
+
 class Bird(models.Model):
     name = models.CharField(max_length=100)
     species = models.CharField(max_length=100)
     description = models.TextField(max_length=250)
     age = models.IntegerField()
+    trees = models.ManyToManyField(Tree)
 
     def __str__(self):
-        return self.name
+        return f'{self.name} ({self.id})'
     
     def get_absolute_url(self):
         return reverse('detail', kwargs={'bird_id': self.id})
